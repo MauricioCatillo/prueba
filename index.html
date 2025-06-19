@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconocimiento y Clasificación de Enfermedades de la Piel mediante Redes Neuronales | UPAO</title>
+    <meta name="description" content="Proyecto de investigación sobre el uso de inteligencia artificial y redes neuronales para el diagnóstico automatizado de enfermedades dermatológicas.">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/upao_logo.jpg" alt="UPAO Logo" class="logo-img">
+                <span class="logo-text">UPAO</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#introduccion" class="nav-link">Introducción</a></li>
+                <li><a href="#objetivos" class="nav-link">Objetivos</a></li>
+                <li><a href="#metodologia" class="nav-link">Metodología</a></li>
+                <li><a href="#resultados" class="nav-link">Resultados</a></li>
+                <li><a href="#equipo" class="nav-link">Equipo</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-background">
+            <img src="assets/images/ai_medical_hero.jpg" alt="IA Médica" class="hero-bg-img">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content" data-aos="fade-up">
+            <div class="hero-badge">
+                <span>Investigación en IA Médica</span>
+            </div>
+            <h1 class="hero-title">
+                Reconocimiento y Clasificación de 
+                <span class="highlight">Enfermedades de la Piel</span> 
+                mediante Redes Neuronales
+            </h1>
+            <p class="hero-subtitle">
+                Proyecto de investigación desarrollado por estudiantes de Ingeniería de Sistemas e 
+                Inteligencia Artificial de la Universidad Privada Antenor Orrego
+            </p>
+            <div class="hero-stats">
+                <div class="stat" data-aos="fade-up" data-aos-delay="100">
+                    <span class="stat-number">98.09%</span>
+                    <span class="stat-label">Precisión en Entrenamiento</span>
+                </div>
+                <div class="stat" data-aos="fade-up" data-aos-delay="200">
+                    <span class="stat-number">93.64%</span>
+                    <span class="stat-label">Precisión en Pruebas</span>
+                </div>
+                <div class="stat" data-aos="fade-up" data-aos-delay="300">
+                    <span class="stat-number">366</span>
+                    <span class="stat-label">Instancias Analizadas</span>
+                </div>
+            </div>
+            <div class="hero-cta" data-aos="fade-up" data-aos-delay="400">
+                <a href="#introduccion" class="btn btn-primary">Explorar Proyecto</a>
+                <a href="#resultados" class="btn btn-secondary">Ver Resultados</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section id="introduccion" class="section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Introducción</h2>
+                <p class="section-subtitle">
+                    El diagnóstico de enfermedades de la piel representa un desafío crítico en la medicina moderna
+                </p>
+            </div>
+            
+            <div class="intro-grid">
+                <div class="intro-content" data-aos="fade-right">
+                    <div class="intro-card">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <h3>Impacto Global</h3>
+                        <p>Las enfermedades de la piel afectan a más del <strong>20% de la población mundial</strong>. Solo en EE.UU., se reportan más de 178,000 casos de melanoma al año.</p>
+                    </div>
+                    
+                    <div class="intro-card">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4"/>
+                                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                                <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+                                <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+                            </svg>
+                        </div>
+                        <h3>Limitaciones Actuales</h3>
+                        <p>Los dermatólogos tienen una precisión <strong>inferior al 70%</strong> para ciertas lesiones como el carcinoma basocelular o el melanoma.</p>
+                    </div>
+                    
+                    <div class="intro-card">
+                        <div class="card-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <h3>Solución con IA</h3>
+                        <p>Sistemas exitosos como <strong>SKNet</strong> y <strong>EczemaNet</strong> han demostrado la efectividad del Machine Learning en diagnóstico dermatológico.</p>
+                    </div>
+                </div>
+                
+                <div class="intro-visual" data-aos="fade-left">
+                    <img src="assets/images/ai_dermatology.png" alt="IA en Dermatología" class="intro-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="problem-content" data-aos="fade-up">
+                <h3 class="problem-title">Problema a Resolver</h3>
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <div class="problem-number">01</div>
+                        <h4>Preparación de Datos</h4>
+                        <p>Recolección y preparación de un conjunto de datos balanceado, limpio y correctamente etiquetado para entrenar modelos con mayor precisión.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-number">02</div>
+                        <h4>Diagnóstico Diferencial</h4>
+                        <p>Dificultad para identificar y clasificar con precisión las enfermedades de la piel debido a síntomas similares entre diferentes condiciones.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-number">03</div>
+                        <h4>Generalización</h4>
+                        <p>Necesidad de desarrollar un modelo que pueda generalizar bien y reconocer nuevas condiciones no incluidas en el entrenamiento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Objectives Section -->
+    <section id="objetivos" class="section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Objetivos</h2>
+                <p class="section-subtitle">
+                    Metas claras para el desarrollo de un sistema de diagnóstico automatizado
+                </p>
+            </div>
+            
+            <div class="objectives-content">
+                <div class="objective-main" data-aos="fade-up">
+                    <div class="objective-card main-objective">
+                        <div class="objective-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h3>Objetivo General</h3>
+                        <p>Desarrollar un modelo de reconocimiento y clasificación de enfermedades de la piel mediante el uso de redes neuronales, con el fin de asistir en el diagnóstico médico y mejorar la precisión y rapidez en la identificación de afecciones cutáneas.</p>
+                    </div>
+                </div>
+                
+                <div class="objectives-specific" data-aos="fade-up" data-aos-delay="200">
+                    <h4>Objetivos Específicos</h4>
+                    <div class="specific-grid">
+                        <div class="specific-item">
+                            <div class="specific-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10,9 9,9 8,9"/>
+                                </svg>
+                            </div>
+                            <p>Obtener y preprocesar un conjunto de datos balanceado, limpio y correctamente etiquetado.</p>
+                        </div>
+                        <div class="specific-item">
+                            <div class="specific-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M12 1v6m0 6v6"/>
+                                    <path d="m21 12-6 0m-6 0-6 0"/>
+                                </svg>
+                            </div>
+                            <p>Desarrollar un modelo de clasificación que permita identificar y diferenciar con precisión las enfermedades de la piel.</p>
+                        </div>
+                        <div class="specific-item">
+                            <div class="specific-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11H1v3h8v3l3-3.5L9 11z"/>
+                                    <path d="M22 12h-6"/>
+                                    <path d="M16 16h6"/>
+                                    <path d="M16 8h6"/>
+                                </svg>
+                            </div>
+                            <p>Evaluar el modelo mediante técnicas de validación cruzada para garantizar su capacidad de generalización.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="metodologia" class="section bg-light">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Metodología</h2>
+                <p class="section-subtitle">
+                    Enfoque sistemático para el desarrollo del modelo de clasificación
+                </p>
+            </div>
+            
+            <div class="methodology-content">
+                <div class="methodology-visual" data-aos="fade-right">
+                    <img src="assets/images/neural_network_viz.png" alt="Visualización de Red Neuronal" class="methodology-image">
+                </div>
+                
+                <div class="methodology-details" data-aos="fade-left">
+                    <div class="method-card">
+                        <h3>Dataset Utilizado</h3>
+                        <div class="dataset-info">
+                            <div class="dataset-item">
+                                <strong>Fuente:</strong> UCI Machine Learning Repository
+                            </div>
+                            <div class="dataset-item">
+                                <strong>Instancias:</strong> 366 casos clínicos
+                            </div>
+                            <div class="dataset-item">
+                                <strong>Atributos:</strong> 34 características (33 lineales + 1 nominal)
+                            </div>
+                            <div class="dataset-item">
+                                <strong>Clases:</strong> 6 tipos de enfermedades dermatológicas
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="method-card">
+                        <h3>Características del Modelo</h3>
+                        <div class="model-features">
+                            <div class="feature-item">
+                                <span class="feature-label">Algoritmo:</span>
+                                <span class="feature-value">J48 (Árbol de Decisión)</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-label">Validación:</span>
+                                <span class="feature-value">Cross-Validation y Percentage Split</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-label">Preprocesamiento:</span>
+                                <span class="feature-value">Normalización y manejo de valores faltantes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="process-flow" data-aos="fade-up">
+                <h3>Flujo del Proceso</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-number">1</div>
+                        <h4>Carga de Datos</h4>
+                        <p>Importación del dataset desde UCI Repository</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-number">2</div>
+                        <h4>Preprocesamiento</h4>
+                        <p>Normalización y filtrado de datos</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-number">3</div>
+                        <h4>División</h4>
+                        <p>70% entrenamiento, 30% pruebas</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-number">4</div>
+                        <h4>Entrenamiento</h4>
+                        <p>Aplicación del algoritmo J48</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="step-number">5</div>
+                        <h4>Evaluación</h4>
+                        <p>Validación y métricas de rendimiento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="resultados" class="section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Resultados</h2>
+                <p class="section-subtitle">
+                    Métricas de rendimiento y análisis del modelo desarrollado
+                </p>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="result-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3>Precisión en Entrenamiento</h3>
+                    <div class="result-value">98.09%</div>
+                    <p>Solo 7 instancias mal clasificadas de 366 totales</p>
+                </div>
+                
+                <div class="result-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="result-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11H1v3h8v3l3-3.5L9 11z"/>
+                        </svg>
+                    </div>
+                    <h3>Precisión en Pruebas</h3>
+                    <div class="result-value">93.64%</div>
+                    <p>Excelente capacidad de generalización</p>
+                </div>
+                
+                <div class="result-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="result-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        </svg>
+                    </div>
+                    <h3>Estadístico Kappa</h3>
+                    <div class="result-value">0.9761</div>
+                    <p>Fuerte acuerdo entre predicciones y clases reales</p>
+                </div>
+            </div>
+            
+            <div class="performance-analysis" data-aos="fade-up">
+                <h3>Análisis de Rendimiento por Clase</h3>
+                <div class="performance-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Clase</th>
+                                <th>TP Rate</th>
+                                <th>Precisión</th>
+                                <th>Recall</th>
+                                <th>F-Measure</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Clase 1</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 2</td>
+                                <td>0.950</td>
+                                <td>0.950</td>
+                                <td>0.950</td>
+                                <td>0.950</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 3</td>
+                                <td>0.920</td>
+                                <td>0.940</td>
+                                <td>0.920</td>
+                                <td>0.930</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 4</td>
+                                <td>0.890</td>
+                                <td>0.910</td>
+                                <td>0.890</td>
+                                <td>0.900</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 5</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 6</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                                <td>1.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="equipo" class="section bg-light">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Equipo de Investigación</h2>
+                <p class="section-subtitle">
+                    Estudiantes y docente de Ingeniería de Sistemas e Inteligencia Artificial
+                </p>
+            </div>
+            
+            <div class="team-content">
+                <div class="supervisor" data-aos="fade-up">
+                    <div class="supervisor-card">
+                        <div class="supervisor-info">
+                            <h3>Docente Supervisor</h3>
+                            <h4>Sagastegui Chigne, Teobaldo Hernán</h4>
+                            <p>Facultad de Ingeniería - UPAO</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="students-grid" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Estudiantes Investigadores</h3>
+                    <div class="students-list">
+                        <div class="student-item">
+                            <div class="student-avatar">CA</div>
+                            <span>Chavez Acevedo, Leonardo</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">RT</div>
+                            <span>Ruiz Tulumba, Bryan</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">RF</div>
+                            <span>Reyes Figueroa, Brandon</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">SB</div>
+                            <span>Solar Beltran, Joan</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">SM</div>
+                            <span>Silvestre Miguel, Alex</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">TL</div>
+                            <span>Terrones Llamo, Jan</span>
+                        </div>
+                        <div class="student-item">
+                            <div class="student-avatar">VJ</div>
+                            <span>Vilca Jimenez, Juan Carlos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="institution-info" data-aos="fade-up" data-aos-delay="300">
+                <div class="institution-card">
+                    <img src="assets/images/upao_logo.jpg" alt="UPAO Logo" class="institution-logo">
+                    <div class="institution-details">
+                        <h4>Universidad Privada Antenor Orrego</h4>
+                        <p>Facultad de Ingeniería</p>
+                        <p>Programa de Estudio de Ingeniería de Sistemas e Inteligencia Artificial</p>
+                        <p>Trujillo - Perú, 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Proyecto de Investigación</h4>
+                    <p>Reconocimiento y Clasificación de Enfermedades de la Piel mediante Redes Neuronales</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Universidad</h4>
+                    <p>Universidad Privada Antenor Orrego</p>
+                    <p>Facultad de Ingeniería</p>
+                    <p>Trujillo - Perú</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Año</h4>
+                    <p>2025</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Universidad Privada Antenor Orrego. Proyecto académico de investigación.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
+

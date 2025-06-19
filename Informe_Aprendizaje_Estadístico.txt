@@ -1,0 +1,1066 @@
+UNIVERSIDAD PRIVADA ANTENOR ORREGO
+FACULTAD DE INGENIERÍA
+PROGRAMA DE ESTUDIO DE INGENIERÍA DE SISTEMAS E
+INTELIGENCIA ARTIFICIAL
+
+_______________________________________________
+“RECONOCIMIENTO Y CLASIFICACIÓN DE ENFERMEDADES DE LA PIEL
+MEDIANTE REDES NEURONALES”
+
+_______________________________________________
+Docente:
+-​ Sagastegui Chigne, Teobaldo Hernán.
+Integrantes:
+-​ Chavez Acevedo, Leonardo.
+-​ Ruiz Tulumba, Bryan.
+-​ Reyes Figueroa, Brandon.
+-​ Solar Beltran, Joan.
+-​ Silvestre Miguel, Alex
+-​ Terrones Llamo, Jan.
+-​ Vilca Jimenez, Juan Carlos.
+Trujillo - Perú
+2025
+
+ÍNDICE
+1. Introducción....................................................................................................................... 3
+1.1 Título del Proyecto....................................................................................................... 3
+1.2 Antecedentes............................................................................................................... 3
+1.3. Problema al resolver................................................................................................... 4
+1.4. Objetivos..................................................................................................................... 4
+1.4.1 General................................................................................................................4
+1.4.2 Específicos.......................................................................................................... 4
+2. Requerimientos.................................................................................................................. 5
+2.1 Definición de Dominio.................................................................................................. 5
+2.2 Determinación de Requisitos....................................................................................... 5
+2.2.1 Requisitos Funcionales....................................................................................... 5
+2.2.2 Requisitos no Funcionales.................................................................................. 5
+3. Planteamiento del Data-Set...............................................................................................6
+3.1 Medidas, Datos, Bases de Datos y Elaboración del Data-Set..................................... 6
+3.2. Normalización y/o filtrado de datos............................................................................. 9
+3.3 Planteamiento del Data-Set........................................................................................11
+3.3.1 Data-Set de entrenamiento................................................................................11
+3.3.2 Data-Set de pruebas......................................................................................... 13
+3.3.3 Set de validación por “Cross-Validation”........................................................... 14
+4. Aprendizaje del modelo del sistema.............................................................................. 16
+4.1. Planteamiento del Modelo de Aprendizaje................................................................16
+4.2. Desarrollo e Implementación del Modelo.................................................................. 17
+5. Comprobación y Despliegue (Deploy) del sistema.......................................................35
+5.1. Aplicación al Modelo: uso del Data-Set de Entrenamiento y de Prueba...................35
+Descripción del modelo.............................................................................................. 35
+División de los datos.................................................................................................. 36
+Resultados obtenidos.................................................................................................36
+Análisis de Resultados............................................................................................... 38
+Resumen General del Desempeño............................................................................ 39
+Matriz de Confusión................................................................................................... 41
+5.2 Ejecución y Pruebas del Modelo................................................................................ 42
+5.3 Ejecución de la validación del Modelo....................................................................... 42
+5.4 Deploy del APP o Web del Sistema de Predicción, de Clasificación, de
+Segmentación o Asociación............................................................................................. 42
+6. Referencias.......................................................................................................................42
+
+1. Introducción
+1.1 Título del Proyecto
+RECONOCIMIENTO Y CLASIFICACIÓN DE ENFERMEDADES DE LA PIEL
+MEDIANTE REDES NEURONALES
+1.2 Antecedentes
+Autores
+-​ Junayed, Masum
+-​ Sadeghzadeh, Arezoo
+-​ Islam, Baharul
+Impacto global de las enfermedades cutáneas
+Las enfermedades de la piel afectan a más del 20% de la población mundial. Solo en
+EE.UU., se reportan más de 178,000 casos de melanoma al año, con más de 9,000
+muertes, lo que convierte al diagnóstico temprano en un objetivo crítico​.
+Limitaciones del diagnóstico tradicional
+El diagnóstico clínico se basa en la inspección visual con solo la imagen. Estudios han
+demostrado que los dermatólogos tienen una precisión inferior al 70% para ciertas
+lesiones como el carcinoma basocelular (BCC) o el melanoma.
+Casos reales de éxito con IA
+Se han desarrollado múltiples sistemas exitosos usando Machine Learning y Deep
+Learning:
+●​ SKNet (2020): Una red convolucional entrenada específicamente para
+clasificar tipos de cáncer de piel con resultados prometedores​.
+●​ Melanoma Challenge – ISIC 2018: Competencia internacional que reunió a
+investigadores para entrenar modelos DL sobre el dataset HAM10000,
+logrando modelos con hasta 84% de precisión.
+
+●​ EczemaNet (2020): Un sistema basado en CNN para diagnosticar diferentes
+tipos de eczema​.
+Aplicaciones reales en salud pública
+El acceso limitado a dermatólogos (hasta 32 días de espera en países desarrollados) ha
+motivado la implementación de sistemas de diagnóstico automático en áreas rurales y
+países en desarrollo.
+1.3. Problema al resolver
+●​ La recolección y preparación de un conjunto de datos balanceado, limpio y
+correctamente etiquetado, que permita entrenar un modelo de reconocimiento
+con mayor precisión.
+●​ Dificultad para identificar y clasificar con precisión las enfermedades de la
+piel debido a que muchas tienen síntomas similares, lo que complica el
+diagnóstico diferencial, incluso por expertos.
+●​ Necesidad de desarrollar un modelo que pueda generalizar bien y reconocer
+nuevas condiciones o variaciones de enfermedades que no fueron incluidas en
+el conjunto de entrenamiento.
+1.4. Objetivos
+1.4.1 General
+Desarrollar un modelo de reconocimiento y clasificación de enfermedades de
+la piel mediante el uso de redes neuronales, con el fin de asistir en el
+diagnóstico médico y mejorar la precisión y rapidez en la identificación de
+afecciones a la piel.
+1.4.2 Específicos
+●​ Obtener y preprocesar un conjunto de datos balanceado, limpio y
+correctamente etiquetado.
+●​ Desarrollar un modelo de clasificación que permita identificar y diferenciar
+con precisión las enfermedades de la piel.
+
+●​ Evaluar el modelo mediante técnicas de validación cruzada para garantizar
+su capacidad de generalización y su rendimiento frente a nuevos casos
+clínicos.
+2. Requerimientos
+2.1 Definición de Dominio
+El proyecto se ubica en el dominio de la inteligencia artificial aplicada a la salud, con
+foco en el uso de redes neuronales profundas para diagnóstico dermatológico
+automatizado. Se busca construir un sistema que asista en el diagnóstico automatizado
+de enfermedades de la piel, empleando datos estructurados extraídos de observaciones
+clínicas e informes histopatológicos (nuestro data-set).
+2.2 Determinación de Requisitos
+2.2.1 Requisitos Funcionales
+●​ El sistema debe permitir cargar archivos con datos clínicos
+estructurados.
+●​ El sistema debe incluir un módulo de preprocesamiento que gestione
+valores faltantes, normalice atributos y etiquete adecuadamente las
+clases.
+●​ El sistema debe entrenar un modelo supervisado para predecir la
+clase de enfermedad dermatológica.
+●​ El sistema debe permitir visualizar los resultados en gráficos
+simples (como barras o tortas) que muestren la distribución de
+predicciones y métricas de rendimiento.
+●​ El sistema debe permitir exportar los reportes de resultados en
+formatos estándar (como PDF o CSV) para su uso académico o
+clínico.
+2.2.2 Requisitos no Funcionales
+●​ El sistema debe realizar una validación cruzada interna (como k-fold
+cross-validation) para evaluar la consistencia y calidad del modelo.
+
+●​ El sistema debe procesar los datos de entrada en un tiempo
+razonable (menos de 5 segundos por registro para predicción
+individual).
+●​ El sistema debe ser modular, facilitando la actualización o
+sustitución de algoritmos de clasificación.
+●​ El sistema debe proteger la confidencialidad de los datos médicos
+utilizados, evitando filtraciones o accesos no autorizados.
+●​ El sistema debe ser robusto y permitir su ejecución continúa con al
+menos un 95% de disponibilidad, especialmente si se implementa en
+entornos de prueba reales.
+3. Planteamiento del Data-Set
+3.1 Medidas, Datos, Bases de Datos y Elaboración del Data-Set
+Este proyecto emplea un enfoque de aprendizaje supervisado, en el cual la variable
+objetivo es la enfermedad dermatológica, categorizada en distintas clases nominales.
+Cada instancia representa a un paciente descrito mediante características clínicas e
+histopatológicas asociadas a su diagnóstico dermatológico.
+●​ Fuente del Data-Set: El conjunto de datos fue obtenido del repositorio de
+aprendizaje automático de la Universidad de California en Irvine (UCI
+Machine Learning Repository), específicamente del siguiente enlace:
+https://archive.ics.uci.edu/dataset/33/dermatology
+●​ Características
+○​ Etiquetas de clase
+Respecto a atributos clínicos se tienen: erythema, scaling, definite
+borders, itching, koebner phenomenon, polygonal papules, follicular
+papules, oral mucosal involvement, knee and elbow involvement,scalp
+involvement,family history, (0 or 1),Age (linear).
+Por otro lado, los aspectos histopatológicos son: melanin incontinence,
+eosinophils in the infiltrate, PNL infiltrate, fibrosis of the papillary
+
+dermis, exocytosis, acanthosis, hyperkeratosis, parakeratosis, clubbing
+of the rete ridges, elongation of the rete ridges, thinning of the
+suprapapillary epidermis, spongiform pustule, munro microabcess,
+focal
+
+hypergranulosis,
+
+disappearance
+
+of
+
+the
+
+granular
+
+layer,
+
+vacuolisation and damage of basal layer, spongiosis, saw-tooth
+appearance of retes, follicular horn plug, perifollicular parakeratosis,
+inflammatory monoluclear inflitrate, band-like infiltrate.
+●​ Elaboración del Data-Set
+○​ Todos los atributos están representados como valores numéricos
+enteros (0–3), excepto la edad (valor continuo) y la clase (nominal).
+○​ Se han organizado y establecido 34 atributos, 33 de los cuales son
+lineales valorados y uno de ellos es nominal.
+TABLA DE VALORES
+Skin Disease
+●​ Classification Dataset
+
+Nombre de la
+Variable
+
+Rol
+
+Tipo
+
+Demográfico
+
+Valor Faltante
+
+Erythema
+
+Feature
+
+Integer
+
+-
+
+No
+
+Scaling
+
+Feature
+
+Integer
+
+-
+
+No
+
+Definite-Borders
+
+Feature
+
+Integer
+
+-
+
+No
+
+Itching
+
+Feature
+
+Integer
+
+-
+
+No
+
+Koebner
+Phenomenon
+
+Feature
+
+Integer
+
+-
+
+No
+
+Polygonal
+Papules
+
+Feature
+
+Integer
+
+-
+
+No
+
+Follicular
+Papules
+
+Feature
+
+Integer
+
+-
+
+No
+
+Oral-Mucosal
+
+Feature
+
+Integer
+
+-
+
+No
+
+Involvement
+Knee Elbow
+Involvement
+
+Feature
+
+Integer
+
+-
+
+No
+
+Scalp
+Involvement
+
+Feature
+
+Integer
+
+-
+
+No
+
+Family History
+
+Feature
+
+Integer
+
+-
+
+No
+
+Melanin
+Incontinence
+
+Feature
+
+Integer
+
+-
+
+No
+
+Eosinophils in
+the infiltrate
+
+Feature
+
+Integer
+
+-
+
+No
+
+Pnl infiltrate
+
+Feature
+
+Integer
+
+-
+
+No
+
+Fibrosis of the
+papillary dermis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Exocytosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Acanthosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Hyperkeratosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Parakeratosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Clubbing of the
+rete ridges
+
+Feature
+
+Integer
+
+-
+
+No
+
+Elongation of
+the rete ridges
+
+Feature
+
+Integer
+
+-
+
+No
+
+Thinning of the
+suprapapillary
+epidermis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Spongiform
+pustule
+
+Feature
+
+Integer
+
+-
+
+No
+
+Munro
+microabcess
+
+Feature
+
+Integer
+
+-
+
+No
+
+Focal
+hypergranulosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Disappearance
+of the granular
+layer
+
+Feature
+
+Integer
+
+-
+
+No
+
+Vacuolistaion
+
+Feature
+
+Integer
+
+-
+
+No
+
+and damage of
+the basal bayer
+Spongiosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Saw-Tooth
+appearance of
+retes
+
+Feature
+
+Integer
+
+-
+
+No
+
+Follicular horn
+plug
+
+Feature
+
+Integer
+
+-
+
+No
+
+Perifollicular
+parakeratosis
+
+Feature
+
+Integer
+
+-
+
+No
+
+Inflammatory
+monoluclear
+infiltrate
+
+Feature
+
+Integer
+
+-
+
+No
+
+Band-Like
+infiltrate
+
+Feature
+
+Integer
+
+-
+
+No
+
+Age
+
+Feature
+
+Integer
+
+Age
+
+Yes
+
+Class
+
+Target
+
+Integer
+
+-
+
+No
+
+3.2. Normalización y/o filtrado de datos
+●​ Paso 1: Seleccionar el data set.
+
+●​ Paso 2: El filtro ReplaceMissingValues sustituye los valores faltantes
+en el dataset, los cuales en este caso se presentan especialmente en el
+atributo relacionado con la edad. J48 puede manejar valores faltantes
+en cierta medida, pero imputarlos (rellenarlos) mejora la calidad de los
+datos y evita posibles sesgos.
+
+●​ Paso 3: El filtro Normalize reescala los atributos numéricos (por
+ejemplo, a un rango de 0 a 1). Aunque el algoritmo J48 no se ve muy
+afectado por escalas, normalizar puede ser útil si piensas usar otros
+algoritmos más sensibles a la magnitud de los valores
+
+3.3 Planteamiento del Data-Set
+3.3.1 Data-Set de entrenamiento
+Una vez cargado el archivo, verificaremos si es necesario realizar algún
+preprocesamiento en los datos, como eliminar atributos innecesarios, manejar
+valores faltantes o aplicar normalización.
+
+Nos dirigimos al apartado de Classify, escogemos el clasificador J48, luego la
+opción Percentage Split y le asignamos 70%.
+
+Finalmente hacemos la prueba el modelo clicando en “Start”
+
+Interpretación de los resultados
+El modelo J48 entrenado con el conjunto completo de datos (Use Training Set) sobre el
+dataset de dermatología muestra un rendimiento excelente, alcanzando una precisión del
+98.09% con solo 7 instancias mal clasificadas de un total de 366. Las métricas de desempeño
+por clase, como la tasa verdadera positiva (TP Rate), precisión, recall y F-Measure, son
+consistentemente altas en todas las clases, especialmente en las clases 1, 5 y 6 donde se logró
+una clasificación perfecta. Además, el valor del estadístico Kappa (0.9761) indica un fuerte
+acuerdo entre las predicciones del modelo y las clases reales, y los errores absolutos y
+cuadrados son bajos, lo cual sugiere una buena capacidad de ajuste.
+Sin embargo, estos resultados fueron obtenidos usando el mismo conjunto de datos para
+entrenamiento y evaluación, lo cual puede llevar a un sobreajuste (overfitting), es decir, que
+el modelo funcione muy bien con los datos vistos pero no necesariamente generalice bien a
+datos nuevos. Para obtener una evaluación más realista de su desempeño, se recomienda
+validar el modelo utilizando métodos como validación cruzada (por ejemplo, 10-fold
+
+cross-validation) o un porcentaje de división entre entrenamiento y prueba, que eso lo
+veremos en el siguiente apartado.
+3.3.2 Data-Set de pruebas
+●​ Data-Set: Dermatology
+
+●​ Ejecutamos y los resultados serían
+
+Interpretación de los resultados
+En el análisis realizado sobre el dataset "dermatology" utilizando el clasificador J48, los
+resultados obtenidos muestran que el modelo ha clasificado correctamente el 93.64% de las
+instancias, lo que indica una alta precisión en la clasificación. Solo el 6.36% de las instancias
+fueron clasificadas incorrectamente, lo que sugiere un buen desempeño general del modelo.
+Al desglosar la precisión por clase, observamos que las clases con mayor rendimiento tienen
+tasas de precisión y recall cercanas a 1.000, especialmente en las clases correspondientes a
+los valores "5" y "6". Estas clases presentan un rendimiento casi perfecto, con una tasa de
+verdaderos positivos (TP Rate) de 1.000, lo que indica que el modelo ha identificado
+correctamente todas las instancias de estas clases. La mayor parte de las instancias fueron
+correctamente clasificadas, pero algunos errores ocurren entre las clases "1", "2", "3" y "4".
+Esto sugiere que las clases "1", "2" y "4", tienen algunas confusiones en cuanto a cómo son
+identificadas por el modelo. A pesar de estos errores, las clases "3”, “5" y "6" fueron
+clasificadas correctamente sin ningún error.
+3.3.3 Set de validación por “Cross-Validation”
+●​ Validación cruzada
+
+●​ Ejecutamos el modelo
+
+Interpretación de los resultados
+El modelo J48 evaluado mediante validación cruzada sobre el dataset de dermatología
+alcanzó una precisión del 95.90%, clasificando correctamente 351 de las 366 instancias, lo
+cual sigue siendo un resultado excelente. El estadístico Kappa de 0.9488 indica un alto nivel
+de acuerdo entre las predicciones y las clases reales. Aunque el rendimiento es ligeramente
+inferior al obtenido con el conjunto de entrenamiento completo, este escenario refleja mejor
+la capacidad de generalización del modelo. Las métricas promedio como la precisión, recall y
+F-Measure rondan el 95-96%, lo que sugiere un modelo robusto y bien balanceado entre
+clases.
+En cuanto al rendimiento por clase, todas las clases presentan valores altos de precisión y
+recall, destacándose especialmente las clases 1 y 5 con resultados cercanos a la perfección.
+Las clases con menor desempeño relativo (como la clase 4) aún mantienen métricas sólidas
+
+(F-Measure de 0.909), y las áreas bajo la curva ROC también son elevadas, lo cual indica una
+buena separabilidad de clases. En resumen, el modelo no solo se comporta bien sobre los
+datos conocidos, sino que también demuestra una fuerte capacidad predictiva en escenarios
+realistas gracias a la validación cruzada.
+4. Aprendizaje del modelo del sistema
+4.1. Planteamiento del Modelo de Aprendizaje
+●​ Objetivo
+Reconocer y clasificar enfermedades de la piel con base en características
+clínicas y patológicas.
+●​ Tipo de Aprendizaje
+Supervisado, ya que el dataset contiene una columna denominada 'class' que
+indica la enfermedad diagnosticada, por lo que el modelo es entrenado para
+predecir esa clase a partir de los demás atributos.
+●​ Clasificación
+○​ Atributo objetivo (clase)
+class: Representa el tipo de enfermedad dermatológica diagnosticada.
+Puede tomar uno de los siguientes valores numéricos, cada uno
+representa una enfermedad:
+1 = psoriasis.
+2 = seboreic dermatitis.
+3 = lichen planus.
+4 = pityriasis rosea.
+5 = chronic dermatitis.
+6 = pityriasis rubra pilaris.
+○​ Número de instancias: 366
+
+○​ Número de atributos: 34 atributos predictivos + 1 atributo de clase
+(total: 35 columnas)
+○​ Valores faltantes: En el atributo age, que contiene algunos.
+●​ Algoritmos candidatos en WEKA
+○​ J48 (Árbol de decisión): Fácil de interpretar, útil para obtener reglas de
+clasificación claras.
+○​ Support Vector Machine (SMO en Weka): Potente para clasificación de
+alto rendimiento
+○​ NaiveBayes: Clasificador probabilístico rápido y simple, útil como línea
+base.
+○​ MultilayerPerceptron (red neuronal artificial): Ideal para relaciones no
+lineales complejas.
+4.2. Desarrollo e Implementación del Modelo
+Árbol de decisión J48
+Se ha considerado usar el árbol de decisión J48 porque permite generar modelos
+fáciles de interpretar, mostrando de manera clara qué atributos son los más
+importantes para la clasificación. Además, es eficiente, maneja tanto datos numéricos
+como categóricos y ayuda a entender la estructura y las reglas detrás de los datos
+-​ Paso 1: Ingresamos a la aplicación Weka.
+
+-​ Paso 2: Abrimos nuestro data set.
+
+wdaw
+
+-​ Paso 3: Aplicamos los filtros definidos: ReplaceMissingValues y
+Normalize.
+
+-​ Paso 4: Seleccionamos el clasificador J48, luego la opción Percentage
+Split y le asignamos 70%.
+
+-​ Paso 5: Pulsamos Start y visualizamos los resultados.
+
+-​ Paso 6: Pulsamos click derecho en la lista de resultado para generar el
+árbol de decisión.
+
+Interpretación de los resultados
+En el análisis realizado sobre el dataset "dermatology" utilizando el clasificador J48, los
+resultados obtenidos muestran que el modelo ha clasificado correctamente el 93.64% de las
+instancias, lo que indica una alta precisión en la clasificación. Solo el 6.36% de las instancias
+fueron clasificadas incorrectamente, lo que sugiere un buen desempeño general del modelo.
+Al desglosar la precisión por clase, observamos que las clases con mayor rendimiento tienen
+tasas de precisión y recall cercanas a 1.000, especialmente en las clases correspondientes a
+los valores "e" y "f". Estas clases presentan un rendimiento casi perfecto, con una tasa de
+verdaderos positivos (TP Rate) de 1.000, lo que indica que el modelo ha identificado
+correctamente todas las instancias de estas clases. La mayor parte de las instancias fueron
+correctamente clasificadas, pero algunos errores ocurren entre las clases "a", "b", "c" y "d".
+Esto sugiere que las clases "a", "b" y "d", tienen algunas confusiones en cuanto a cómo son
+identificadas por el modelo. A pesar de estos errores, las clases "c”, “e" y "f" fueron
+clasificadas correctamente sin ningún error.
+
+El árbol de decisión generado con el clasificador J48 usando el 70% de los datos para
+entrenamiento clasifica enfermedades dermatológicas a partir de atributos histopatológicos.
+El nodo raíz es melanin_incontinence, lo que indica que esta característica es la más relevante
+para comenzar la clasificación. A partir de ahí, el árbol se ramifica evaluando otras
+características
+
+como
+
+fibrosis_of_the_papillary_dermis,
+
+perifollicular_parakeratosis,
+
+y
+
+clubbing_of_the_rete_ridges, entre otras. Cada nodo representa una condición sobre una
+característica y lleva a distintas ramas según se cumpla o no, hasta llegar a las hojas del árbol
+que indican la clase final (como 1, 2, 3, etc.) junto con la cantidad de instancias clasificadas
+correctamente e incorrectamente.
+Este árbol muestra una estructura eficiente con profundidad moderada y divisiones claras
+basadas en umbrales específicos. Por ejemplo, si melanin_incontinence > 0, directamente se
+asigna la clase 3 con 70 instancias. Otras ramas implican más decisiones, como el camino que
+evalúa el thinning_of_the_suprapapillary_epidermis y luego el koebner_phenomenon,
+reflejando una lógica diagnóstica más detallada. En general, el árbol permite interpretar cómo
+se toman las decisiones de clasificación y qué atributos tienen mayor peso predictivo en el
+diagnóstico de enfermedades de la piel.
+Support Vector Machines (SVM)
+Se ha considerado usar Support Vector Machines (SVM) porque es una técnica
+poderosa de aprendizaje supervisado que se especializa en encontrar un hiperplano
+óptimo que maximiza el margen entre las clases. Esto no solo garantiza una
+clasificación precisa, sino que también permite manejar tanto datos lineales como no
+lineales mediante el uso de núcleos. Además, SVM es eficiente en espacios de
+características grandes y es robusto frente al sobreajuste, lo que la convierte en una
+herramienta ideal para problemas complejos de clasificación.
+-​ Paso 1 : Abrimos chosse → functions → SMO
+
+Se está utilizando el SMO (Sequential Minimal Optimization) es un algoritmo utilizado para
+entrenar modelos Support Vector Machines (SVM) de manera eficiente. El propósito
+principal de SMO es optimizar el proceso de entrenamiento de SVM al descomponer el
+problema de optimización en subproblemas más pequeños y manejables.
+
+-​ Paso 2: Seleccionamos Cross-validation y luego se le starDarle Star
+
+-​ Paso 3 : Resultados
+
+Interpretación de los Resultados
+La imagen muestra los resultados de una validación cruzada estratificada de un modelo de
+clasificación en WEKA, utilizando 10 particiones. El modelo logró una precisión muy alta,
+con 356 de 366 instancias clasificadas correctamente, lo que representa un 97.27% de
+exactitud. El estadístico Kappa es de 0.9658, lo que indica un alto grado de concordancia
+entre las predicciones del modelo y las clases reales, más allá del azar. Los errores, tanto
+absolutos como cuadráticos medios, son bajos, indicando una buena calidad del modelo. En
+la sección de precisión por clase, se observa que todas las clases tienen valores altos de
+precisión, recall y F-measure, especialmente las clases 1, 3, 5 y 6 que presentan métricas
+perfectas o casi perfectas. Además, los valores del área bajo la curva ROC (ROC Area) y
+PRC (Precision-Recall Curve) también son muy altos (cercanos o iguales a 1), lo que
+confirma un excelente rendimiento del clasificador en todas las clases. En conjunto, estos
+resultados sugieren que el modelo está altamente optimizado y generaliza bien en el conjunto
+de datos usado.
+Matriz de confusión
+La matriz de confusión muestra que el modelo clasificó correctamente la mayoría de las
+instancias, con un desempeño perfecto en las clases 1, 5 y 6, donde no se registraron errores.
+Las clases 2, 3 y 4 presentaron leves confusiones: en la clase 2, 4 instancias fueron
+incorrectamente clasificadas como clase 4; en la clase 3, 1 instancia fue clasificada como
+clase 4; y en la clase 4, 5 instancias fueron mal clasificadas como clase 2. Estos errores
+sugieren una cierta similitud entre las clases 2 y 4, que podría estar generando confusión en el
+modelo. Aun así, el rendimiento general es muy alto, con una clasificación precisa en casi
+todas las clases y pocos errores, lo que confirma la solidez del modelo utilizado.
+
+Redes neuronales (MultilayerPerceptron)
+-​ Paso 1 : Abrimos Choose→ functions → MultilayerPerpeptron.
+
+-​ Paso 2: Seleccionamos MultilayerPerceptron y luego se le da a Start
+
+-​ Paso 3 : Resultados
+
+Interpretación de los Resultados
+El modelo MultilayerPerceptron aplicado al conjunto de datos de dermatología con 366
+instancias y 35 atributos logró una alta precisión del 98.36 % utilizando validación cruzada de
+10 pliegues. Solo se clasificaron incorrectamente 6 instancias. Las métricas globales indican
+un desempeño sobresaliente, con un estadístico Kappa de 0.9795, error absoluto medio de
+0.0116 y área bajo la curva ROC promedio de 0.997. A nivel de clases, el modelo obtuvo
+métricas perfectas (precisión, recall, F-Measure y MCC de 1.000) para las clases 1, 3, 5 y 6,
+mientras que para las clases 2 y 4 también mostró resultados muy altos, con una leve
+disminución en recall (0.934 para la clase 2 y 0.959 para la clase 4). La matriz de confusión
+refleja una excelente capacidad de clasificación, con mínimos errores de predicción entre
+clases. En conjunto, estos resultados demuestran que el modelo tiene una gran capacidad para
+diagnosticar correctamente enfermedades dermatológicas con una alta fiabilidad y precisión.
+NaiveBayes
+Usamos Naive Bayes por su eficiencia, simplicidad y buen desempeño en tareas de
+clasificación, este algoritmo probabilístico se basa en la teoría de Bayes y asume
+independencia entre atributos, lo cual reduce la complejidad del modelo sin
+comprometer significativamente la precisión en muchos casos.
+-​ Paso 1: Para usar NaiveBayes vamos a Classify, luego choose, abrimos
+la carpeta de classifiers y en la carpeta de bayes seleccionamos el
+algoritmo NaiveBayes.
+
+-​ Paso 2: Ahora elegimos en las opciones de prueba elegimos la opción
+de Cross-Validation con un total de 10 pliegues, ya que da una
+
+estimación muy confiable del rendimiento del modelo en datos nuevos,
+y es muy útil para datasets medianos como el nuestro que es de 366
+instancias. Además, NaiveBayes se adapta bien a este enfoque porque
+es rápido de entrenar y no sufre mucho de sobreajuste.
+
+-​ Paso 3: Resultados
+
+Interpretación de los Resultados
+Los resultados muestran que el modelo clasificó correctamente el 97.54% de las instancias, lo
+cual refleja una alta precisión global. Solo 9 de las 366 instancias fueron clasificadas de
+forma incorrecta. El estadístico de Kappa fue de 0.9693, indicando un nivel de concordancia
+casi perfecto entre las predicciones del modelo y las verdaderas clases. Además, los errores
+promedio fueron muy bajos: el error absoluto medio (MAE) fue de 0.0096 y la raíz del error
+cuadrático medio (RMSE) fue de 0.0831, lo que sugiere que las predicciones del modelo
+fueron en general muy cercanas a los valores reales.
+En la matriz de confusión se puede observar que la mayoría de las clases fueron clasificadas
+correctamente. Las clases "chronic dermatitis" y "pityriasis rubra pilaris" fueron predichas de
+forma perfecta. La clase "seboreic dermatitis" presentó el mayor número de errores: 7 de sus
+instancias fueron clasificadas incorrectamente como "pityriasis rosea", y 1 como "lichen
+
+planus". También hubo un único error al clasificar una instancia de "psoriasis" como
+"seboreic dermatitis". Todas las demás clases fueron predichas con una precisión del 100%.
+En el análisis por clase, se destaca que cinco de las seis clases (específicamente "psoriasis",
+"lichen planus", "pityriasis rosea", "chronic dermatitis" y "pityriasis rubra pilaris") fueron
+clasificadas con precisiones superiores al 98%, lo cual indica un rendimiento excelente. La
+clase "seboreic dermatitis" fue la que presentó mayor dificultad, con un recall de 86.9%,
+debido a su confusión con otras enfermedades de características similares.
+En resumen, NaiveBayes demostró ser un algoritmo altamente efectivo para este problema de
+clasificación multiclase en dermatología, ofreciendo resultados excelentes en la mayoría de
+las clases, con muy pocos errores de clasificación. Solo la clase "seboreic dermatitis" mostró
+un margen de mejora. Estos resultados hacen que NaiveBayes sea una opción válida y
+eficiente para tareas de reconocimiento y clasificación automática de enfermedades de la piel,
+especialmente cuando se requiere un modelo rápido y con buen desempeño general.
+5. Comprobación y Despliegue (Deploy) del sistema
+5.1. Aplicación al Modelo: uso del Data-Set de Entrenamiento y de Prueba
+a.​ Preprocesar los datos
+ReplaceMissingValues (para rellenar valores faltantes como la edad).
+●​ Choose → filters → unsupervised → attribute →
+ReplaceMissingValues​
+●​ Presiona Apply​
+
+Ir a la pestaña Classify.​
+
+En el botón "Choose", selecciona:​
+
+●​ trees → J48 (árbol de decisión)
+
+b.​ Seleccionar método de entrenamiento
+Para entrenar con todo el dataset:
+●​ En Test options, marca: Use training set.
+
+Se utilizó WEKA para entrenar el modelo de clasificación J48 con el conjunto
+completo de datos. Previamente se aplicaron filtros de limpieza y normalización. Se
+eligió la opción “Use training set” para entrenar el modelo con el 100% del dataset y
+evaluar su desempeño inicial. El modelo obtuvo una precisión superior al 95%,
+mostrando buen rendimiento y generando un árbol de decisión que permite interpretar
+las reglas de clasificación. Posteriormente, se aplicarán métodos de validación cruzada
+para evaluar su capacidad de generalización.
+
+El modelo entrenado con el clasificador J48 alcanzó una precisión del 98.09%,
+clasificando correctamente 359 de 366 instancias. El estadístico Kappa (0.9761)
+indica una excelente concordancia entre las predicciones del modelo y las clases
+reales.
+Las métricas por clase muestran un rendimiento sobresaliente:
+●​ Las clases 1 y 5 fueron clasificadas con precisión y recall perfectos (1.000).
+●​ Las clases 2 y 4 también mostraron alto desempeño, aunque con ligeras
+confusiones (por ejemplo, clase 2 fue confundida con la 4 en 2 ocasiones).
+●​ La F-Measure promedio es 0.981, confirmando un buen equilibrio entre
+precisión y sensibilidad.
+La matriz de confusión confirma que los errores son mínimos y que el modelo
+identifica con alta fiabilidad cada tipo de enfermedad, especialmente las clases más
+representadas como la 1 y la 5.
+En conjunto, estos resultados evidencian que el modelo J48 es altamente preciso,
+estable y confiable para la tarea de clasificación de enfermedades de la piel.
+
+5.2 Ejecución y Pruebas del Modelo
+a.​ Aplicar los filtros previos
+●​ Aplicar ReplaceMissingValues para completar los valores faltantes
+(por ejemplo, en el atributo age).​
+●​ Aplicar Normalize para escalar los atributos si planeas usar
+clasificadores sensibles a la magnitud.
+
+b.​ Seleccionar el clasificador​
+●​ Ir a la pestaña Classify.​
+●​ Elegir el clasificador J48: trees → J48.
+c.​ Configurar la opción de prueba
+●​ En el panel de prueba, seleccionar:​
+○​ Test options → Percentage split: 70% training / 30% testing.​
+●​ Esto divide el dataset automáticamente para hacer la prueba real con
+datos nuevos.
+
+d.​ Ejecutar el modelo
+●​ Clic en Start.
+
+5.3 Ejecución de la validación del Modelo
+Descripción del modelo
+Se seleccionó el clasificador J48 con parámetros de confianza 0.25 y mínimo de
+instancias 2. En las opciones de prueba se eligió validación cruzada con 10
+particiones. En la parte inferior, se muestra que ya se ejecutó el modelo.
+
+División de los datos
+El modelo J48 tuvo un alto desempeño, arrojando un 95.9% de precisión y un
+Kappa de 0.95 aproximadamente, lo que indica mucha concordancia con la
+realidad. La clase con mejor resultado fue la 1 (psoriasis), con 98.2% de aciertos
+y una precisión de de 1. Las demás clases no se quedan atrás, pues también tienen
+una alta precisión, alrededor de un 0.90 en adelante. Esto nos da a entender que el
+modelo está distinguiendo bien entre las clases.
+
+Resultados obtenidos
+
+Clase 1
+Presenta un rendimiento excepcional
+●​ Precisión perfecta (1.000) y un recall muy alto (0.982), lo que indica
+que el modelo identifica correctamente casi todos los ejemplos de esta
+clase sin cometer errores.
+
+●​ F1-score y MCC muy altos reflejan un equilibrio ideal entre precisión y
+cobertura.
+●​ Sin falsos positivos, y las áreas ROC/PRC también son sobresalientes.
+El modelo maneja esta clase con una confiabilidad excelente.
+Clase 2
+●​ Un rendimiento sólido y confiable, con buen balance entre precisión
+(0.921) y recall (0.951).
+●​ Aunque hay una ligera tasa de falsos positivos, el modelo muestra un
+buen entendimiento de esta clase. Un desempeño competente, con
+espacio para pequeñas optimizaciones.
+Clase 3
+●​ El modelo logra una precisión destacable (0.957) y un recall de 0.931,
+lo cual indica que reconoce bien la mayoría de los casos.
+●​ Aunque se podría mejorar un poco la cobertura, sigue siendo un
+resultado muy positivo. Un trabajo bastante bueno, con oportunidades
+para afinar aún más la sensibilidad del modelo.
+Clase 4
+●​ Esta clase representa un reto un poco mayor, con métricas algo más
+moderadas (Precisión: 0.900, Recall: 0.918).
+●​ La MCC (0.895) es la más baja entre las clases, pero aún se mantiene
+dentro de un rango aceptable. Aquí se puede trabajar en mejorar la
+representación de la clase o ajustar el modelo para diferenciarla mejor
+de otras clases similares.
+Clase 5
+●​ Recall perfecto (1.000): el modelo no deja pasar ningún caso sin
+identificar.
+
+●​ La precisión también es muy alta (0.981), lo que significa que casi
+todas sus predicciones fueron correctas. Un rendimiento excelente, con
+una cobertura total y gran fiabilidad.
+Clase 6
+●​ Muy bien equilibrada: tanto la precisión como el recall son de 0.950,
+con una MCC sólida.
+●​ El modelo muestra consistencia y una muy buena capacidad de
+generalización en esta clase.
+Análisis de Resultados
+
+Resumen General del Desempeño
+●​ Instancias correctamente clasificadas: 351 (95.90%)
+●​ Instancias incorrectamente clasificadas: 15 (4.10%)
+●​ Número total de instancias: 366
+
+●​ Estadísticas de error:
+○​ Kappa: 0.9488 (indica excelente concordancia)
+○​ Error absoluto medio (MAE): 0.0189
+○​ Raíz del error cuadrático medio (RMSE): 0.1163
+○​ Error absoluto relativo: 7.11%
+○​ Error cuadrático relativo: 31.86%
+●​ Detalles exactos por clase
+Clase 1
+●​ Precisión sobresaliente (100%)
+●​ Recall alto (98.2%)
+●​ F-Measure excelente (0.991)
+●​ Esta clase es reconocida de forma casi perfecta, con mínima confusión
+con otras clases.
+Clase 2
+●​ Precisión aceptable (92.1%)
+●​ Recall alto (95.1%)
+●​ F-Measure sólida (0.935)
+●​ Buen balance entre falsos positivos y verdaderos positivos. El modelo
+la maneja bien.
+Clase 3
+●​ Precisión moderada (90.0%)
+●​ Recall moderado (93.6%)
+●​ F-Measure buena (0.918)
+
+●​ Aunque con un poco más de confusión que la clase 2, mantiene un
+desempeño aceptable.
+Clase 4
+●​ Precisión muy alta (98.1%)
+●​ Recall perfecto (100%)
+●​ F-Measure sobresaliente (0.990)
+●​ Uno de los mejores desempeños del modelo, clasificación
+prácticamente perfecta.
+Clase 5
+●​ Precisión perfecta (100%)
+●​ Recall perfecto (100%)
+●​ F-Measure perfecta (1.000)
+●​ Sin errores. El modelo identifica esta clase de manera impecable.
+Clase 6
+●​ Precisión alta (96.1%)
+●​ Recall perfecto (100%)
+●​ F-Measure muy fuerte (0.980)
+●​ Desempeño excelente, con muy pocos errores.
+Matriz de Confusión
+Clase 1
+●​ 110 clasificaciones correctas, muy pocas confusiones (2 hacia
+Clase 3, 1 hacia Clase 2).
+Clase 2
+●​ 58 correctas, 1 error hacia Clase 1 y 1 hacia Clase 3.
+
+Clase 3
+●​ 59 correctas, leves confusiones con Clases 1, 2 y 4.
+Clase 4
+●​ 70 aciertos, sin errores.
+Clase 5
+●​ 8 aciertos, sin errores.
+Clase 6
+●​ 13 aciertos, sin errores
+
+5.4 Deploy del APP o Web del Sistema de Predicción, de Clasificación, de
+Segmentación o Asociación.
+
+6. Referencias
+https://archive.ics.uci.edu/dataset/33/dermatology
+
+
